@@ -1,0 +1,21 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django = "*"
+django-debug-toolbar = "*"
+django-phonenumber-field = "*"
+graphviz = "*"
+django-extensions = "*"
+pyparsing = "*"
+pydot = "*"
+mysqlclient = "*"
+django-seed = "*"
+psycopg2-binary = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.8"

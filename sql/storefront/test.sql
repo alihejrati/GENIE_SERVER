@@ -1,0 +1,1 @@
+SELECT id, title from store_product
