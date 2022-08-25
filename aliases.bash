@@ -46,6 +46,7 @@ alias pmsh="python manage.py shell"
 alias pmsm="python manage.py schemamigration"
 alias pmsync="python manage.py syncdb --noinput"
 alias pmt="python manage.py test"
+alias pmu="python manage.py createsuperuser"
 alias pmrs="python manage.py runserver"
 alias pmsm="python manage.py sqlmigrate auth 0001" # TODO: try to define a function for this
 pmsql() {
