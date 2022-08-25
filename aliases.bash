@@ -27,6 +27,7 @@ alias gbd="git branch -d "         # arg1: branch_name
 alias gbD="git branch -D "         # arg1: branch_name
 alias gbds="git push -d "          # arg1: server_name(example:origin) arg2: branch_name_on_server
 alias grs="git reset --soft "      # arg1: hash_name
+alias grh="git reset --hard "      # arg1: hash_name
 alias gt="ssh -T git@gitlab.com"
 gmerge() {
     echo $(grh $1 && gcc $2) 
