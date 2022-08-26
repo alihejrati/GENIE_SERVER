@@ -132,6 +132,9 @@ def update(inp, obj_type, spec, flag_v):
 
             if key_type == 'ForeignKey':
                 key = key + '_id'
+            
+            if key_type == 'OneToOneField':
+                key = key + '_id'
 
             if value != Code['undefined']:
                 update_dict[key] = value
