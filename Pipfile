@@ -14,6 +14,9 @@ pydot = "*"
 mysqlclient = "*"
 django-seed = "*"
 psycopg2-binary = "*"
+django-fontawesome = "*"
+fontawesome-free = "*"
+fontawesomefree = "*"
 
 [dev-packages]
 

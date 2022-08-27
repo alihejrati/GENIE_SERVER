@@ -34,8 +34,11 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
+import sys
+sys.modules['fontawesome_free'] = __import__('fontawesome-free')
 
 INSTALLED_APPS = [
+    'fontawesomefree',
     'django.contrib.admin',
     'django.contrib.sessions',
     'django.contrib.auth',

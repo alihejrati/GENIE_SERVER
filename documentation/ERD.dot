@@ -1,6 +1,6 @@
 digraph model_graph {
   // Dotfile by Django-Extensions graph_models
-  // Created: 2022-08-18 19:46
+  // Created: 2022-08-26 20:07
   // Cli Options: -a
 
   fontname = "Roboto"
@@ -101,6 +101,80 @@ digraph model_graph {
       <FONT FACE="Roboto">object_repr</FONT>
       </TD><TD ALIGN="LEFT">
       <FONT FACE="Roboto">CharField</FONT>
+      </TD></TR>
+    
+    
+      </TABLE>
+      >]
+
+  }
+  subgraph cluster_django_contrib_sessions {
+    label=<
+          <TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0">
+          <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER">
+          <FONT FACE="Roboto" COLOR="Black" POINT-SIZE="10">
+          <B>django.contrib.sessions</B>
+          </FONT>
+          </TD></TR>
+          </TABLE>
+          >
+    color=olivedrab4
+    style="rounded"
+  
+    django_contrib_sessions_base_session_AbstractBaseSession [label=<
+      <TABLE BGCOLOR="white" BORDER="1" CELLBORDER="0" CELLSPACING="0">
+      <TR><TD COLSPAN="2" CELLPADDING="5" ALIGN="CENTER" BGCOLOR="#1b563f">
+      <FONT FACE="Roboto" COLOR="white" POINT-SIZE="10"><B>
+      AbstractBaseSession
+      </B></FONT></TD></TR>
+    
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Roboto">expire_date</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Roboto">DateTimeField</FONT>
+      </TD></TR>
+    
+    
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Roboto">session_data</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Roboto">TextField</FONT>
+      </TD></TR>
+    
+    
+      </TABLE>
+      >]
+  
+    django_contrib_sessions_models_Session [label=<
+      <TABLE BGCOLOR="white" BORDER="1" CELLBORDER="0" CELLSPACING="0">
+      <TR><TD COLSPAN="2" CELLPADDING="5" ALIGN="CENTER" BGCOLOR="#1b563f">
+      <FONT FACE="Roboto" COLOR="white" POINT-SIZE="10"><B>
+      Session<BR/>&lt;<FONT FACE="Roboto"><I>AbstractBaseSession</I></FONT>&gt;
+      </B></FONT></TD></TR>
+    
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Roboto"><I><B>session_key</B></I></FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Roboto"><I><B>CharField</B></I></FONT>
+      </TD></TR>
+    
+    
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Roboto"><I>expire_date</I></FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Roboto"><I>DateTimeField</I></FONT>
+      </TD></TR>
+    
+    
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Roboto"><I>session_data</I></FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Roboto"><I>TextField</I></FONT>
       </TD></TR>
     
     
@@ -495,40 +569,6 @@ digraph model_graph {
     color=olivedrab4
     style="rounded"
   
-    apps_store_models_Promotion [label=<
-      <TABLE BGCOLOR="white" BORDER="1" CELLBORDER="0" CELLSPACING="0">
-      <TR><TD COLSPAN="2" CELLPADDING="5" ALIGN="CENTER" BGCOLOR="#1b563f">
-      <FONT FACE="Roboto" COLOR="white" POINT-SIZE="10"><B>
-      Promotion
-      </B></FONT></TD></TR>
-    
-    
-      <TR><TD ALIGN="LEFT" BORDER="0">
-      <FONT FACE="Roboto"><B>id</B></FONT>
-      </TD><TD ALIGN="LEFT">
-      <FONT FACE="Roboto"><B>BigAutoField</B></FONT>
-      </TD></TR>
-    
-    
-    
-      <TR><TD ALIGN="LEFT" BORDER="0">
-      <FONT FACE="Roboto">description</FONT>
-      </TD><TD ALIGN="LEFT">
-      <FONT FACE="Roboto">CharField</FONT>
-      </TD></TR>
-    
-    
-    
-      <TR><TD ALIGN="LEFT" BORDER="0">
-      <FONT FACE="Roboto">discount</FONT>
-      </TD><TD ALIGN="LEFT">
-      <FONT FACE="Roboto">FloatField</FONT>
-      </TD></TR>
-    
-    
-      </TABLE>
-      >]
-  
     apps_store_models_Collection [label=<
       <TABLE BGCOLOR="white" BORDER="1" CELLBORDER="0" CELLSPACING="0">
       <TR><TD COLSPAN="2" CELLPADDING="5" ALIGN="CENTER" BGCOLOR="#1b563f">
@@ -588,7 +628,7 @@ digraph model_graph {
     
     
       <TR><TD ALIGN="LEFT" BORDER="0">
-      <FONT FACE="Roboto">describtion</FONT>
+      <FONT FACE="Roboto">description</FONT>
       </TD><TD ALIGN="LEFT">
       <FONT FACE="Roboto">TextField</FONT>
       </TD></TR>
@@ -629,6 +669,40 @@ digraph model_graph {
       </TABLE>
       >]
   
+    apps_store_models_Promotion [label=<
+      <TABLE BGCOLOR="white" BORDER="1" CELLBORDER="0" CELLSPACING="0">
+      <TR><TD COLSPAN="2" CELLPADDING="5" ALIGN="CENTER" BGCOLOR="#1b563f">
+      <FONT FACE="Roboto" COLOR="white" POINT-SIZE="10"><B>
+      Promotion
+      </B></FONT></TD></TR>
+    
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Roboto"><B>id</B></FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Roboto"><B>BigAutoField</B></FONT>
+      </TD></TR>
+    
+    
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Roboto">description</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Roboto">CharField</FONT>
+      </TD></TR>
+    
+    
+    
+      <TR><TD ALIGN="LEFT" BORDER="0">
+      <FONT FACE="Roboto">discount</FONT>
+      </TD><TD ALIGN="LEFT">
+      <FONT FACE="Roboto">FloatField</FONT>
+      </TD></TR>
+    
+    
+      </TABLE>
+      >]
+  
     apps_store_models_Customer [label=<
       <TABLE BGCOLOR="white" BORDER="1" CELLBORDER="0" CELLSPACING="0">
       <TR><TD COLSPAN="2" CELLPADDING="5" ALIGN="CENTER" BGCOLOR="#1b563f">
@@ -662,7 +736,7 @@ digraph model_graph {
     
     
       <TR><TD ALIGN="LEFT" BORDER="0">
-      <FONT FACE="Roboto">fname</FONT>
+      <FONT FACE="Roboto">first_name</FONT>
       </TD><TD ALIGN="LEFT">
       <FONT FACE="Roboto">CharField</FONT>
       </TD></TR>
@@ -670,7 +744,7 @@ digraph model_graph {
     
     
       <TR><TD ALIGN="LEFT" BORDER="0">
-      <FONT FACE="Roboto">lname</FONT>
+      <FONT FACE="Roboto">last_name</FONT>
       </TD><TD ALIGN="LEFT">
       <FONT FACE="Roboto">CharField</FONT>
       </TD></TR>
@@ -990,6 +1064,10 @@ digraph model_graph {
   django_contrib_admin_models_LogEntry -> django_contrib_contenttypes_models_ContentType
   [label=" content_type (logentry)"] [arrowhead=none, arrowtail=dot, dir=both];
 
+
+  django_contrib_sessions_models_Session -> django_contrib_sessions_base_session_AbstractBaseSession
+  [label=" abstract\ninheritance"] [arrowhead=empty, arrowtail=none, dir=both];
+
   django_contrib_auth_base_user_AbstractBaseUser [label=<
   <TABLE BGCOLOR="white" BORDER="0" CELLBORDER="0" CELLSPACING="0">
   <TR><TD COLSPAN="2" CELLPADDING="4" ALIGN="CENTER" BGCOLOR="#1b563f">
@@ -1033,14 +1111,14 @@ digraph model_graph {
   [label=" content_type (likeditem)"] [arrowhead=none, arrowtail=dot, dir=both];
 
 
-  apps_store_models_Promotion -> apps_store_models_Product
-  [label=" products (promotions)"] [arrowhead=dot arrowtail=dot, dir=both];
-
   apps_store_models_Collection -> apps_store_models_Product
   [label=" featured_product (+)"] [arrowhead=none, arrowtail=dot, dir=both];
 
   apps_store_models_Product -> apps_store_models_Collection
   [label=" collection (product)"] [arrowhead=none, arrowtail=dot, dir=both];
+
+  apps_store_models_Promotion -> apps_store_models_Product
+  [label=" products (promotions)"] [arrowhead=dot arrowtail=dot, dir=both];
 
   apps_store_models_Address -> apps_store_models_Customer
   [label=" customer (address)"] [arrowhead=none, arrowtail=none, dir=both];
