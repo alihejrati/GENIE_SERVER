@@ -1,6 +1,9 @@
 from django.contrib import admin
 from django.apps import apps as Apps
+from utils.render import URL
+from types import SimpleNamespace
 from .computed_columns import PREDEFINED_COMPUTED_COLUMNS
+ 
 
 predefined_computed_columns = PREDEFINED_COMPUTED_COLUMNS
 
@@ -43,7 +46,17 @@ def register(
         if key_type == 'ManyToManyField':
             continue
         if key_type == 'ManyToOneRel':
-            continue
+            h = getattr(model, fn, 
+                getattr(model, fn + '_set', dict()))
+            h_app = str(getattr(h, 'field', '')).split('.')[0]
+            _ref_cols[fn] = predefined_computed_columns['f#link']({}, handle={
+                'description': fn,
+                'seturl': lambda s, r, fn=fn: URL('ManyToOneRel', SimpleNamespace(**{
+                    'app_label': h_app,
+                    'model_name': fn,
+                    'filter': model_name + '__id'
+                }), r)
+            })
         if key_type == 'ForeignKey':
             legacy_fn = fn
             fn = 'computed_column_' + legacy_fn + '_ID'
@@ -63,11 +76,19 @@ def register(
         _list_display.append(fn)
     
     class DynamicModelAdmin(admin.ModelAdmin):
+        my_vars = SimpleNamespace(**{
+            'model_name': model_name,
+            'model': model
+        })
+
         list_display = admin_cfg.get('list_display', _list_display)
         list_editable = admin_cfg.get('list_editable', [])
         list_per_page = admin_cfg.get('list_per_page', 21)
         ordering = admin_cfg.get('ordering', [])
         list_select_related = admin_cfg.get('list_select_related', [])
+
+        def get_queryset(self, request):
+            return admin_cfg.get('get_queryset', lambda qs: qs)(super().get_queryset(request)) 
 
         class Media:
             js = ('fontawesomefree/js/all.min.js',)    
@@ -76,7 +97,7 @@ def register(
             }
 
     if add_fshrp_at_first:
-        DynamicModelAdmin.list_display.insert(0, 'f#')
+        DynamicModelAdmin.list_display.insert(0, 'f#btns')
 
     for pd_cc_key in DynamicModelAdmin.list_display:
         if pd_cc_key in predefined_computed_columns:
