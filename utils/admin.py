@@ -35,12 +35,16 @@ def register(
         model = create_proxy_model(model_name, model, cfg=admin_cfg)
 
     _list_display = []
+    _list_editable_force = []
     _ref_cols = {}
     
     for field in model._meta.get_fields():
         fn = field.name
         key_type = str(type(field)).replace("'", '').replace('>', '').split('.')[-1]
         
+        if getattr(field, 'choices', None) is not None:
+            _list_editable_force.append(fn)
+
         if key_type == 'OneToOneRel':
             continue
         if key_type == 'ManyToManyField':
@@ -102,6 +106,10 @@ def register(
     for pd_cc_key in DynamicModelAdmin.list_display:
         if pd_cc_key in predefined_computed_columns:
             setattr(DynamicModelAdmin, pd_cc_key, predefined_computed_columns[pd_cc_key](admin_cfg.get('html_params', {})))
+        if (pd_cc_key in _list_editable_force) and (pd_cc_key not in DynamicModelAdmin.list_editable):
+            print('@@@@@@@@@@@@@@@@@@2', pd_cc_key)
+            DynamicModelAdmin.list_editable.append(pd_cc_key)
+
 
     for _ref_col_key in _ref_cols:
         setattr(DynamicModelAdmin, _ref_col_key, _ref_cols[_ref_col_key])
