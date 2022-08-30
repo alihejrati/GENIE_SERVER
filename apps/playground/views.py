@@ -1,7 +1,7 @@
 from utils import crud
 from django.shortcuts import render
 from django.http import HttpResponse
-from django.db.models import ExpressionWrapper, Q, F, Value, Count, Max, Min, Avg, Sum, DecimalField
+from django.db.models import QuerySet, ExpressionWrapper, Q, F, Value, Count, Max, Min, Avg, Sum, DecimalField
 from apps.store.models import Product, Customer, Collection, Order, OrderItem, Promotion
 from apps.tags.models import TaggedItem
 

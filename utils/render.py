@@ -4,6 +4,14 @@ from django.template import Context, Template
 from django.utils.html import urlencode
 
 def URL(page, self, row):
+    # if page == 'ManyToManyField':
+    #     s = self
+    #     r = row
+    #     return os.path.join(
+    #         reverse(f'admin:{s.app_label}_{s.model_name}_changelist'),
+    #         '?' + urlencode({f'{s.filter}': r.id})
+    #     )
+
     if page == 'ManyToOneRel':
         s = self
         r = row

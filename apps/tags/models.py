@@ -1,11 +1,19 @@
+from utils import admin as Admin
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.admin import GenericTabularInline
 
 class TaggedItemManager(models.Manager):
+    def get_inline(self):
+        return Admin.create_inline(
+            TaggedItem,
+            inline_type=GenericTabularInline,
+            inline_autocomplete_fields=['tag']
+        )
+
     def get_tags_for(self, obj_type, qs_obj_id):
         content_type = ContentType.objects.get_for_model(obj_type)
-    
         return TaggedItem.objects \
             .select_related('tag') \
             .filter(
@@ -17,6 +25,9 @@ class TaggedItemManager(models.Manager):
 
 class Tag(models.Model):
     label = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.label
 
 class TaggedItem(models.Model):
     tag = models.ForeignKey(Tag, on_delete=models.CASCADE)

@@ -1,15 +1,65 @@
 from . import models
+from apps.tags.models import TaggedItem
 from utils import admin as Admin
 from django.contrib import admin
-from django.urls import reverse
-from django.db.models import ExpressionWrapper, Q, F, Value, Count, Max, Min, Avg, Sum, DecimalField
+from django.db.models import QuerySet, ExpressionWrapper, Q, F, Value, Count, Max, Min, Avg, Sum, DecimalField
 
 # Register your models here.
+class My_new_filter(admin.SimpleListFilter):
+    title = 'my title for my_new_filter'
+    parameter_name = 'inventory' # important!
+
+    # what items should apear in my_new_filter
+    def lookups(self, request, model_admin):
+        return [ # list of tupple(s)
+            ('negetive', '-'), # arg0: real value, arg1: human description
+            ('posetive', '+'),
+            ('zero', '0')
+        ]
+    
+    # this is where we implementing the filtering logic
+    def queryset(self, request, qs: QuerySet):
+        # print('#############3', self.parameter_name)
+        if self.value() == 'negetive':
+            return qs.filter(inventory__lt=0)
+        if self.value() == 'zero':
+            return qs.filter(inventory=0)
+        if self.value() == 'posetive':
+            return qs.filter(inventory__gt=0)
+
+def my_new_action_for_set_inventory_to_zero(self, req, qs: QuerySet):
+    updated_count = qs.update(inventory=0)
+    self.message_user(
+        req,
+        f'{updated_count} products were successfully updated'
+    )
 
 Admin.register_all(
     __file__, 
-    use_fsharp_for_all_at_first=True,
-    # ={
+    # IfsharpBtns=0,
+    admin_cfgs={
+        'product': {
+            'inlines': [
+                TaggedItem.objects.get_inline()
+                # Admin.create_inline(models.OrderItem)
+            ],
+            # 'autocomplete_fields': ['collection'],
+            # 'prepopulated_fields': {
+            #     'description': ['title']
+            # },
+            # 'actions': {
+            #     'my_new_action_for_set_inventory_to_zero': admin.action(
+            #         description='clear -> inventory',
+            #         function=my_new_action_for_set_inventory_to_zero
+            #     ) # qs contains only rows that selected by user
+            # },
+            # 'get_queryset': lambda qs: qs.filter(id__range=(50, 100))
+            # 'ignore': True,
+            # 'search_fields': ['membership__istartswith'],
+            # 'list_filter': ['collection__title', My_new_filter]
+        }
+    }
+    # admin_cfgs ={
     #     'product': {
     #         # 'ignore': True,
     #         'list_display': ['f#', 'id', 'inv_status', 'price', 'col_title'], 
@@ -78,66 +128,53 @@ from utils.render import html
 #     }
 # }, add_fshrp_at_first=True)
 
-Admin.register('t1', models.Collection, {
-    'proxy': True,
-    'list_display': ['title', 'a', 'number-of-products', 'f#btns', 'f#link'],
-    'html_params': {
-        # 'f#link:href': 'http://google.com'
-    },
-    'computed_columns': {
-        'number-of-products': admin.display(
-            description='count of products',
-            ordering='NOFPs', 
-            function=lambda self, row: row.NOFPs
-        ),
-        'a': admin.display(
-            description='aa',
-            ordering='a', 
-            function=lambda self, row: row.a
-        )
-    },
-    'get_queryset': lambda qs: qs.filter(id__range=(1, 100)).prefetch_related('product_set').annotate(
-        NOFPs=Count('product'),
-        a=Value(23)
-    ),
-    'meta': {
-        'verbose_name_plural': 'جدول تست',
-    }
-})
-
-
-# print('@@@@@@@@@@@@@2', )
-
-# Admin.register('t1', models.Order, {
+# Admin.register('t1', models.Collection, {
 #     'proxy': True,
-#     'list_per_page': 10,
-#     'list_display': ['id', 'payment_status', 'customer_fullname', 'zip'],
-#     'list_select_related': ['customer', 'customer__address'],
-#     'computed_columns': {
-#         'customer_fullname': admin.display(
-#             description='fullname',
-#             ordering='customer__first_name', 
-#             function=lambda self, row: row.customer.first_name + ' ' + row.customer.last_name 
-#         ),
-#         'zip': admin.display(
-#             description='zip',
-#             ordering='customer__address__zip', 
-#             function=lambda self, row: row.customer.address.zip
-#         ),
+#     'list_display': ['title', 'a', 'number-of-products', 'f#btns', 'f#link'],
+#     'html_params': {
+#         # 'f#link:href': 'http://google.com'
 #     },
+#     'computed_columns': {
+#         'number-of-products': admin.display(
+#             description='count of products',
+#             ordering='NOFPs', 
+#             function=lambda self, row: row.NOFPs
+#         ),
+#         'a': admin.display(
+#             description='aa',
+#             ordering='a', 
+#             function=lambda self, row: row.a
+#         )
+#     },
+#     'get_queryset': lambda qs: qs.filter(id__range=(1, 100)).prefetch_related('product_set').annotate(
+#         NOFPs=Count('product'),
+#         a=Value(23)
+#     ),
 #     'meta': {
-#         'verbose_name_plural': 't1-name',
+#         'verbose_name_plural': 'جدول تست',
 #     }
 # })
 
 
+Admin.register('t1', models.Order, {
+    'proxy': True,
+    'list_per_page': 10,
+    'list_display': ['f#btns', 'id', 'payment_status', 'customer_fullname', 'zip'],
+    'list_select_related': ['customer', 'customer__address'],
+    'computed_columns': {
+        'customer_fullname': admin.display(
+            description='fullname',
+            ordering='customer__first_name', 
+            function=lambda self, row: row.customer.first_name + ' ' + row.customer.last_name 
+        ),
+        'zip': admin.display(
+            description='zip',
+            ordering='customer__address__zip', 
+            function=lambda self, row: row.customer.address.zip
+        ),
+    },
+    'meta': {
+        'verbose_name_plural': 't1-name',
+    }
+})
 
-# class ProductProxy(models.Product):
-#     class Meta:
-#         proxy = True 
-
-# @admin.register(ProductProxy)
-# class HeroProxyAdmin(admin.ModelAdmin):
-#     list_display = ['id']
-#     def get_queryset(self, request):
-#         return super().get_queryset(request)

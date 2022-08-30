@@ -1,5 +1,7 @@
 from django.db import models
+from django.core.validators import MinValueValidator
 # from phonenumber_field.modelfields import PhoneNumberField
+
 # Create your models here.
 
 class Collection(models.Model):
@@ -16,7 +18,9 @@ class Product(models.Model):
     # sku = models.CharField(max_length=10, primary_key=True)
     title = models.CharField(max_length=255)
     description = models.TextField()
-    price = models.DecimalField(max_digits=6, decimal_places=2) # 9999.99
+    price = models.DecimalField(
+        validators=[MinValueValidator(1, message='dadash nemeshe ke :)')],
+        max_digits=6, decimal_places=2) # 9999.99
     inventory = models.IntegerField()
     last_update = models.DateTimeField(auto_now=True)
     collection = models.ForeignKey(Collection, on_delete=models.PROTECT)
@@ -30,7 +34,7 @@ class Product(models.Model):
 class Promotion(models.Model):
     description = models.CharField(max_length=255)
     discount = models.FloatField()
-    products = models.ManyToManyField(Product, related_name='promotions')
+    products = models.ManyToManyField(Product, related_name='promotions', blank=True)
 
 class Customer(models.Model):
     first_name = models.CharField(max_length=255)
