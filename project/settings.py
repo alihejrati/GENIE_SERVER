@@ -20,6 +20,10 @@ app_list = filter(
     lambda x: not(x in ['__pycache__', '__init__.py'] or x.startswith('.')), 
     os.listdir(os.path.join(BASE_DIR, 'apps'))
 )
+customApp_list = filter(
+    lambda x: not(x in ['__pycache__', '__init__.py'] or x.startswith('.')), 
+    os.listdir(os.path.join(BASE_DIR, 'apps', 'custom'))
+)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
@@ -48,7 +52,8 @@ INSTALLED_APPS = [
     'django_extensions',
     'debug_toolbar',
     'django_seed',
-    *[f'apps.{app_name}' for app_name in list(app_list)]
+    *[f'apps.{app_name}' for app_name in list(app_list)],
+    *[f'apps.custom.{app_name}' for app_name in list(customApp_list)]
 ]
 
 GRAPH_MODELS = {

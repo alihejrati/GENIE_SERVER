@@ -6,7 +6,7 @@ from utils.render import URL
 from types import SimpleNamespace
 from .computed_columns import PREDEFINED_COMPUTED_COLUMNS
  
-
+IGNORE_LIST = ['content_type']
 predefined_computed_columns = PREDEFINED_COMPUTED_COLUMNS
 
 def create_proxy_model(proxy_name, proxy_model, cfg=None):
@@ -27,9 +27,21 @@ def create_inline(
     inline_extra=0,
     inline_min_num=0,
     inline_max_num=100,
-    inline_autocomplete_fields=[],
+    inline_autocomplete_fields=None,
+    flag_set_autocomplete_if_is_z=True,
     inline_type=admin.TabularInline
 ):
+    inline_autocomplete_fields = [] if inline_autocomplete_fields is None else inline_autocomplete_fields
+    if flag_set_autocomplete_if_is_z and isinstance(inline_autocomplete_fields, list) and len(inline_autocomplete_fields) == 0:
+        for target_field in inline_model._meta.get_fields():
+            target_fn = target_field.name
+            target_key_type = str(type(target_field)).replace("'", '').replace('>', '').split('.')[-1]
+            
+            if target_key_type == 'ManyToManyField' or target_key_type == 'ForeignKey':
+                if target_fn in IGNORE_LIST:
+                    continue
+                inline_autocomplete_fields.append(target_fn)
+    
     class NewInline(inline_type):
         model = inline_model
         autocomplete_fields = inline_autocomplete_fields
@@ -45,7 +57,6 @@ def register(
     IfsharpBtns=-1
 ):
     admin_cfg = {} if admin_cfg is None else admin_cfg
-    ignore_list = ['content_type']
 
     if admin_cfg.get('ignore', False):
         return
@@ -65,7 +76,7 @@ def register(
         fn = field.name
         key_type = str(type(field)).replace("'", '').replace('>', '').split('.')[-1]
         
-        if fn in ignore_list:
+        if fn in IGNORE_LIST:
             continue
 
         if key_type == 'ManyToOneRel' and model_name.lower() in fn.lower():
@@ -80,7 +91,7 @@ def register(
                 model_level2_fn = model_level2_field.name
                 model_level2_key_type = str(type(model_level2_field)).replace("'", '').replace('>', '').split('.')[-1]
                 if model_level2_key_type == 'ManyToManyField' or model_level2_key_type == 'ForeignKey':
-                    if model_level2_fn in ignore_list: # its belongs to django
+                    if model_level2_fn in IGNORE_LIST: # its belongs to django
                         continue
                     model_level2_params['inline_autocomplete_fields'].append(model_level2_fn)
 
@@ -223,6 +234,7 @@ def register(
             col.short_description = rename_columns[rc_key]
     
     admin.site.register(model, DynamicModelAdmin)
+    return DynamicModelAdmin
 
 def register_all(
     f, 
@@ -234,10 +246,12 @@ def register_all(
     app_name = f if flag_sendName else str(f).split('/')[-2]
     App = Apps.get_app_config(app_name)
     
+    ModelAdminClass = {}
     for model_name, model in App.models.items():
-        register(
+        ModelAdminClass[model.__name__ + 'Admin'] = register(
             admin_cfg=admin_cfgs.get(model_name, None),
             model_name=model_name,
             model=model,
             IfsharpBtns=IfsharpBtns
         )
+    return SimpleNamespace(**ModelAdminClass)

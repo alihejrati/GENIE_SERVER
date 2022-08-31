@@ -2,14 +2,16 @@ from utils import admin as Admin
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
-from django.contrib.contenttypes.admin import GenericTabularInline
+from django.contrib.contenttypes.admin import GenericTabularInline, GenericStackedInline
 
 class TaggedItemManager(models.Manager):
-    def get_inline(self):
+    def get_inline(self, **kwargs):
         return Admin.create_inline(
             TaggedItem,
-            inline_type=GenericTabularInline,
-            inline_autocomplete_fields=['tag']
+            **{
+                'inline_type': GenericTabularInline,
+                **kwargs
+            }
         )
 
     def get_tags_for(self, obj_type, qs_obj_id):

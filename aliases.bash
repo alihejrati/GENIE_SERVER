@@ -35,6 +35,7 @@ gmerge() {
 
 # django basic
 alias pm="python manage.py"
+alias pmapp="python manage.py startapp " # arg1: app_name
 alias pmcs="python manage.py collectstatic --noinput"
 alias pmdbsh="python manage.py dbshell"
 alias pmdd="python manage.py dumpdata"
